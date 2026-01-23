@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Wrapped 2024</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #1C1917;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 9/16;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            opacity: 0;
+            animation: fadeScene 21s infinite;
+        }
+        .scene:nth-child(1) { animation-delay: 0s; }
+        .scene:nth-child(2) { animation-delay: 3s; }
+        .scene:nth-child(3) { animation-delay: 6s; }
+        .scene:nth-child(4) { animation-delay: 9s; }
+        .scene:nth-child(5) { animation-delay: 12s; }
+        .scene:nth-child(6) { animation-delay: 15s; }
+        .scene:nth-child(7) { animation-delay: 18s; }
+
+        @keyframes fadeScene {
+            0%, 100% { opacity: 0; transform: scale(0.95); }
+            2% { opacity: 1; transform: scale(1); }
+            12% { opacity: 1; transform: scale(1); }
+            14% { opacity: 0; transform: scale(0.95); }
+        }
+
+        /* Scene 1: Intro */
+        .scene-intro {
+            background: linear-gradient(135deg, #1C1917 0%, #292524 100%);
+        }
+        .scene-intro h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #D97706;
+            text-shadow: 0 0 40px #D97706;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .scene-intro .subtitle {
+            font-size: 1.2rem;
+            color: #FEF3E2;
+            margin-top: 15px;
+        }
+        .scene-intro .year {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #D97706;
+            margin-top: 30px;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #D97706; }
+            to { text-shadow: 0 0 60px #D97706, 0 0 80px #D97706; }
+        }
+
+        /* Scene 2: Conversations */
+        .scene-conversations {
+            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+        }
+        .scene-conversations .label {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+        }
+        .scene-conversations .number {
+            font-size: 5rem;
+            font-weight: bold;
+            color: white;
+            animation: countUp 1s ease-out forwards;
+        }
+        .scene-conversations .description {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 10px;
+            text-align: center;
+        }
+        .scene-conversations .note {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 30px;
+        }
+
+        /* Scene 3: Code */
+        .scene-code {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        .scene-code .number {
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+        }
+        .scene-code .description {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+        }
+        .scene-code .code-block {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #A7F3D0;
+            text-align: left;
+        }
+
+        /* Scene 4: Topics */
+        .scene-topics {
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+        }
+        .scene-topics h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .topic-bar {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .topic-bar .info {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .topic-bar .bar-bg {
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .topic-bar .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            animation: fillBar 1s ease-out forwards;
+        }
+        @keyframes fillBar {
+            from { width: 0; }
+        }
+
+        /* Scene 5: Peak Hours */
+        .scene-peak {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+        }
+        .scene-peak h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+        .scene-peak .time {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #FEF08A;
+            margin: 20px 0;
+        }
+        .chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 150px;
+            margin-top: 20px;
+        }
+        .chart-bar {
+            width: 30px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 6px;
+            animation: growBar 0.5s ease-out forwards;
+        }
+        .chart-bar.peak {
+            background: #FEF08A;
+            box-shadow: 0 0 20px rgba(254, 240, 138, 0.6);
+        }
+        @keyframes growBar {
+            from { height: 0; }
+        }
+        .chart-labels {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .chart-labels span { width: 30px; text-align: center; }
+        .scene-peak .note {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 20px;
+        }
+
+        /* Scene 6: Fun Fact */
+        .scene-funfact {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        .scene-funfact .emoji {
+            font-size: 5rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .scene-funfact h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .scene-funfact .number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1C1917;
+            margin-top: 15px;
+        }
+        .scene-funfact .note {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 15px;
+        }
+
+        /* Scene 7: Outro */
+        .scene-outro {
+            background: linear-gradient(135deg, #1C1917 0%, #292524 100%);
+        }
+        .scene-outro h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #D97706;
+            text-shadow: 0 0 30px #D97706;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .scene-outro .subtitle {
+            font-size: 1.2rem;
+            color: #FEF3E2;
+            margin-top: 20px;
+        }
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #D97706;
+        }
+        .stat .label {
+            font-size: 0.8rem;
+            color: #FEF3E2;
+            margin-top: 5px;
+        }
+        .scene-outro .footer {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 40px;
+        }
+
+        /* Progress bar */
+        .progress {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            animation: progress 21s linear infinite;
+        }
+        @keyframes progress {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Scene 1: Intro -->
+        <div class="scene scene-intro">
+            <h1>Claude Wrapped</h1>
+            <div class="subtitle">Your Year with AI</div>
+            <div class="year">2024</div>
+        </div>
+
+        <!-- Scene 2: Conversations -->
+        <div class="scene scene-conversations">
+            <div class="label">You had</div>
+            <div class="number">847</div>
+            <div class="description">conversations with Claude</div>
+            <div class="note">That's more than 95% of users!</div>
+        </div>
+
+        <!-- Scene 3: Code -->
+        <div class="scene scene-code">
+            <div class="label" style="color: rgba(255,255,255,0.8); font-size: 1.3rem;">Together we wrote</div>
+            <div class="number">12,847</div>
+            <div class="description">lines of code</div>
+            <div class="code-block">
+                function buildDreams() {<br>
+                &nbsp;&nbsp;const ideas = await claude.think();<br>
+                &nbsp;&nbsp;return ideas.map(realize);<br>
+                }
+            </div>
+        </div>
+
+        <!-- Scene 4: Topics -->
+        <div class="scene scene-topics">
+            <h2>Your Top Topics</h2>
+            <div class="topic-bar">
+                <div class="info"><span>React & TypeScript</span><span>34%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 34%; background: #61DAFB; box-shadow: 0 0 20px #61DAFB;"></div></div>
+            </div>
+            <div class="topic-bar">
+                <div class="info"><span>Python & Data Science</span><span>28%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 28%; background: #3776AB; box-shadow: 0 0 20px #3776AB;"></div></div>
+            </div>
+            <div class="topic-bar">
+                <div class="info"><span>System Design</span><span>22%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 22%; background: #FF6B6B; box-shadow: 0 0 20px #FF6B6B;"></div></div>
+            </div>
+            <div class="topic-bar">
+                <div class="info"><span>Writing & Editing</span><span>16%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 16%; background: #FFC107; box-shadow: 0 0 20px #FFC107;"></div></div>
+            </div>
+        </div>
+
+        <!-- Scene 5: Peak Hours -->
+        <div class="scene scene-peak">
+            <h2>Your Peak Productivity</h2>
+            <div class="time">3 PM</div>
+            <div class="chart">
+                <div class="chart-bar" style="height: 40%;"></div>
+                <div class="chart-bar" style="height: 65%;"></div>
+                <div class="chart-bar" style="height: 85%;"></div>
+                <div class="chart-bar" style="height: 50%;"></div>
+                <div class="chart-bar" style="height: 35%;"></div>
+                <div class="chart-bar" style="height: 70%;"></div>
+                <div class="chart-bar peak" style="height: 100%;"></div>
+                <div class="chart-bar" style="height: 80%;"></div>
+                <div class="chart-bar" style="height: 45%;"></div>
+            </div>
+            <div class="chart-labels">
+                <span>9AM</span><span>10</span><span>11</span><span>12</span><span>1PM</span><span>2</span><span>3</span><span>4</span><span>5</span>
+            </div>
+            <div class="note">Afternoon coder detected!</div>
+        </div>
+
+        <!-- Scene 6: Fun Fact -->
+        <div class="scene scene-funfact">
+            <div class="emoji">🚀</div>
+            <h2>Your longest conversation</h2>
+            <div class="number">127 messages</div>
+            <div class="note">That's a true collaboration marathon!</div>
+        </div>
+
+        <!-- Scene 7: Outro -->
+        <div class="scene scene-outro">
+            <h1>Thanks for an amazing year!</h1>
+            <div class="subtitle">Here's to even more in 2025</div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="value">847</div>
+                    <div class="label">Conversations</div>
+                </div>
+                <div class="stat">
+                    <div class="value">12,847</div>
+                    <div class="label">Lines of Code</div>
+                </div>
+                <div class="stat">
+                    <div class="value">42</div>
+                    <div class="label">Topics</div>
+                </div>
+            </div>
+            <div class="footer">Made with Remotion + Claude</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+</body>
+</html>
