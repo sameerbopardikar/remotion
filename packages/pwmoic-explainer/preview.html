@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWMOIC Model Explainer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #F8FAFC;
+        }
+
+        .scene {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Scene 1: Intro */
+        .scene-intro {
+            background: linear-gradient(180deg, #0F172A 0%, #1E3A5F 50%, #0F172A 100%);
+        }
+
+        .main-title {
+            font-size: clamp(48px, 15vw, 120px);
+            font-weight: bold;
+            letter-spacing: 8px;
+            text-shadow: 0 4px 24px rgba(30, 58, 95, 0.8);
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .acronym-row {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .acronym-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .acronym-item:nth-child(1) { animation-delay: 0.2s; }
+        .acronym-item:nth-child(2) { animation-delay: 0.4s; }
+        .acronym-item:nth-child(3) { animation-delay: 0.6s; }
+        .acronym-item:nth-child(4) { animation-delay: 0.8s; }
+        .acronym-item:nth-child(5) { animation-delay: 1.0s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .acronym-letter {
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: bold;
+            color: #FFB800;
+        }
+
+        .acronym-word {
+            font-size: clamp(12px, 3vw, 18px);
+            color: #94A3B8;
+        }
+
+        .formula-box {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: clamp(18px, 4vw, 36px);
+            background: #334155;
+            padding: 20px 40px;
+            border-radius: 16px;
+            border: 3px solid #FFB800;
+            box-shadow: 0 8px 32px rgba(255, 184, 0, 0.3);
+            margin: 30px 0;
+            animation: formulaGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes formulaGlow {
+            from { box-shadow: 0 8px 32px rgba(255, 184, 0, 0.3); }
+            to { box-shadow: 0 8px 48px rgba(255, 184, 0, 0.5); }
+        }
+
+        .formula-box .green { color: #10B981; }
+        .formula-box .blue { color: #3B82F6; }
+        .formula-box .yellow { color: #F59E0B; }
+
+        .tagline {
+            font-size: clamp(14px, 3vw, 24px);
+            color: #94A3B8;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        /* Scene 2: Formula */
+        .scene-formula {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .section-title {
+            font-size: clamp(32px, 8vw, 56px);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .section-bar {
+            width: 120px;
+            height: 4px;
+            background: #FFB800;
+            border-radius: 2px;
+            margin-bottom: 40px;
+        }
+
+        .formula-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .formula-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            animation: slideInLeft 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .formula-item:nth-child(1) { animation-delay: 0.2s; }
+        .formula-item:nth-child(2) { animation-delay: 0.4s; }
+        .formula-item:nth-child(3) { animation-delay: 0.6s; }
+        .formula-item:nth-child(4) { animation-delay: 0.8s; }
+        .formula-item:nth-child(5) { animation-delay: 1.0s; }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .formula-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .formula-content {
+            flex: 1;
+        }
+
+        .formula-label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .formula-code {
+            font-family: monospace;
+            font-size: 14px;
+            background: #334155;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        /* Scene 3: Tree */
+        .scene-tree {
+            background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .tree-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .tree-stages {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tree-node {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: clamp(10px, 2.5vw, 14px);
+            font-weight: bold;
+            text-align: center;
+            animation: nodeAppear 0.4s ease-out forwards;
+            opacity: 0;
+            min-width: 80px;
+        }
+
+        .tree-node:nth-child(1) { animation-delay: 0.1s; }
+        .tree-node:nth-child(2) { animation-delay: 0.2s; }
+        .tree-node:nth-child(3) { animation-delay: 0.3s; }
+        .tree-node:nth-child(4) { animation-delay: 0.4s; }
+        .tree-node:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes nodeAppear {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .tree-arrow {
+            font-size: 20px;
+            color: #64748B;
+            animation: fadeIn 0.3s ease-out forwards;
+            opacity: 0;
+        }
+
+        .tree-arrow:nth-of-type(1) { animation-delay: 0.15s; }
+        .tree-arrow:nth-of-type(2) { animation-delay: 0.25s; }
+        .tree-arrow:nth-of-type(3) { animation-delay: 0.35s; }
+        .tree-arrow:nth-of-type(4) { animation-delay: 0.45s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .node-investment { background: #1E3A5F; }
+        .node-early { background: #3B82F6; }
+        .node-cross { background: #10B981; }
+        .node-mass { background: #F59E0B; }
+        .node-position { background: #8B5CF6; }
+
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .outcome-card {
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            animation: outcomeSlide 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        .outcome-card:nth-child(1) { animation-delay: 0.6s; }
+        .outcome-card:nth-child(2) { animation-delay: 0.7s; }
+        .outcome-card:nth-child(3) { animation-delay: 0.8s; }
+        .outcome-card:nth-child(4) { animation-delay: 0.9s; }
+        .outcome-card:nth-child(5) { animation-delay: 1.0s; }
+        .outcome-card:nth-child(6) { animation-delay: 1.1s; }
+
+        @keyframes outcomeSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .outcome-leader { background: #10B981; }
+        .outcome-challenger { background: #3B82F6; }
+        .outcome-follower { background: #F59E0B; }
+        .outcome-niche { background: #64748B; }
+        .outcome-nocross { background: #EF4444; }
+        .outcome-failure { background: #7F1D1D; }
+
+        .outcome-label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .outcome-desc {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Scene 4: Stage Factor */
+        .scene-stage {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .stage-cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .stage-card {
+            background: #1E293B;
+            border-radius: 20px;
+            padding: 24px;
+            flex: 1;
+            min-width: 250px;
+            max-width: 280px;
+            border: 2px solid transparent;
+            animation: cardAppear 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .stage-card:nth-child(1) {
+            animation-delay: 0.2s;
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        .stage-card:nth-child(2) {
+            animation-delay: 0.4s;
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+        .stage-card:nth-child(3) {
+            animation-delay: 0.6s;
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stage-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .stage-preseed .stage-icon { background: #EF4444; }
+        .stage-seed .stage-icon { background: #F59E0B; }
+        .stage-seriesa .stage-icon { background: #10B981; }
+
+        .stage-name {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .stage-value {
+            font-family: monospace;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 16px 0;
+        }
+
+        .stage-preseed .stage-value { color: #EF4444; }
+        .stage-seed .stage-value { color: #F59E0B; }
+        .stage-seriesa .stage-value { color: #10B981; }
+
+        .stage-bar {
+            height: 12px;
+            background: #334155;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .stage-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            animation: barGrow 1s ease-out forwards;
+            transform-origin: left;
+        }
+
+        .stage-preseed .stage-bar-fill {
+            background: #EF4444;
+            width: 62.5%;
+            animation-delay: 0.4s;
+        }
+        .stage-seed .stage-bar-fill {
+            background: #F59E0B;
+            width: 81.25%;
+            animation-delay: 0.6s;
+        }
+        .stage-seriesa .stage-bar-fill {
+            background: #10B981;
+            width: 100%;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes barGrow {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        .stage-desc {
+            font-size: 14px;
+            color: #94A3B8;
+            line-height: 1.5;
+        }
+
+        /* Scene 5: Scorecards */
+        .scene-scorecards {
+            background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .scorecard-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .scorecard {
+            background: #1E293B;
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            min-width: 280px;
+            max-width: 320px;
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .scorecard:nth-child(1) { animation-delay: 0.2s; border-left: 4px solid #3B82F6; }
+        .scorecard:nth-child(2) { animation-delay: 0.4s; border-left: 4px solid #10B981; }
+        .scorecard:nth-child(3) { animation-delay: 0.6s; border-left: 4px solid #F59E0B; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scorecard-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .scorecard-emoji {
+            font-size: 28px;
+        }
+
+        .scorecard-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .scorecard-weight {
+            font-family: monospace;
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        .scorecard-desc {
+            font-size: 13px;
+            color: #94A3B8;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .scorecard-traits {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .trait {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        .trait-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .scorecard:nth-child(1) .trait-dot { background: #3B82F6; }
+        .scorecard:nth-child(2) .trait-dot { background: #10B981; }
+        .scorecard:nth-child(3) .trait-dot { background: #F59E0B; }
+
+        /* Scene 6: ARR Adjustment */
+        .scene-arr {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .arr-container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .arr-steps {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .arr-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+            animation: stepAppear 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        .arr-step:nth-child(1) { animation-delay: 0.2s; }
+        .arr-step:nth-child(2) { animation-delay: 0.4s; }
+        .arr-step:nth-child(3) { animation-delay: 0.6s; }
+        .arr-step:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes stepAppear {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #10B981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .step-formula {
+            font-family: monospace;
+            font-size: 12px;
+            color: #64748B;
+            margin-bottom: 4px;
+        }
+
+        .step-value {
+            font-family: monospace;
+            font-size: 14px;
+            color: #10B981;
+            background: #334155;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .arr-visual {
+            flex: 1;
+            min-width: 300px;
+            background: #1E293B;
+            border-radius: 16px;
+            padding: 24px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .arr-visual-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFB800;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-container {
+            margin-bottom: 24px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            color: #94A3B8;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 32px;
+            background: #334155;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 25%;
+            background: #10B981;
+            border-radius: 16px;
+            animation: progressGrow 1.5s ease-out forwards;
+            animation-delay: 1s;
+        }
+
+        @keyframes progressGrow {
+            from { width: 0%; }
+            to { width: 25%; }
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .prob-comparison {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .prob-box {
+            text-align: center;
+        }
+
+        .prob-label {
+            font-size: 12px;
+            color: #64748B;
+            margin-bottom: 4px;
+        }
+
+        .prob-value {
+            font-family: monospace;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .prob-baseline { color: #94A3B8; }
+        .prob-adjusted { color: #10B981; }
+
+        .prob-arrow {
+            font-size: 24px;
+            color: #FFB800;
+        }
+
+        /* Scene 7: Thresholds */
+        .scene-thresholds {
+            background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+        }
+
+        .threshold-cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 30px;
+        }
+
+        .threshold-card {
+            background: #1E293B;
+            border-radius: 16px;
+            padding: 24px;
+            flex: 1;
+            min-width: 220px;
+            max-width: 280px;
+            text-align: center;
+            animation: thresholdPop 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .threshold-card:nth-child(1) {
+            animation-delay: 0.2s;
+            border: 3px solid #EF4444;
+        }
+        .threshold-card:nth-child(2) {
+            animation-delay: 0.4s;
+            border: 3px solid #F59E0B;
+        }
+        .threshold-card:nth-child(3) {
+            animation-delay: 0.6s;
+            border: 3px solid #10B981;
+        }
+
+        @keyframes thresholdPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .threshold-emoji {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .threshold-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .threshold-value {
+            font-family: monospace;
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .threshold-card:nth-child(1) .threshold-value { color: #EF4444; }
+        .threshold-card:nth-child(2) .threshold-value { color: #F59E0B; }
+        .threshold-card:nth-child(3) .threshold-value { color: #10B981; }
+
+        .threshold-desc {
+            font-size: 13px;
+            color: #94A3B8;
+            line-height: 1.4;
+        }
+
+        /* Scene 8: Summary */
+        .scene-summary {
+            background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #0F172A 100%);
+        }
+
+        .summary-title {
+            font-size: clamp(36px, 10vw, 72px);
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 4px;
+        }
+
+        .summary-subtitle {
+            font-size: clamp(16px, 4vw, 28px);
+            color: #94A3B8;
+            margin-bottom: 40px;
+        }
+
+        .summary-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            max-width: 1100px;
+            margin-bottom: 40px;
+        }
+
+        .summary-card {
+            background: #1E293B;
+            border-radius: 12px;
+            padding: 20px;
+            width: 320px;
+            border: 2px solid rgba(46, 90, 143, 0.4);
+            animation: summarySlide 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .summary-card:nth-child(1) { animation-delay: 0.1s; }
+        .summary-card:nth-child(2) { animation-delay: 0.2s; }
+        .summary-card:nth-child(3) { animation-delay: 0.3s; }
+        .summary-card:nth-child(4) { animation-delay: 0.4s; }
+        .summary-card:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes summarySlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .summary-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card-emoji {
+            font-size: 24px;
+        }
+
+        .summary-card-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .summary-card-desc {
+            font-family: monospace;
+            font-size: 13px;
+            color: #94A3B8;
+        }
+
+        .final-tagline {
+            text-align: center;
+            animation: finalFade 1s ease-out forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+        }
+
+        @keyframes finalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .final-tagline h3 {
+            font-size: clamp(20px, 5vw, 32px);
+            color: #FFB800;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .final-tagline p {
+            font-size: clamp(14px, 3vw, 20px);
+            color: #64748B;
+        }
+
+        /* Navigation dots */
+        .nav-dots {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #334155;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover, .nav-dot.active {
+            background: #FFB800;
+            transform: scale(1.3);
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .nav-dots {
+                display: none;
+            }
+
+            .scene {
+                padding: 30px 16px;
+            }
+
+            .outcomes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToScene(0)"></div>
+        <div class="nav-dot" onclick="scrollToScene(1)"></div>
+        <div class="nav-dot" onclick="scrollToScene(2)"></div>
+        <div class="nav-dot" onclick="scrollToScene(3)"></div>
+        <div class="nav-dot" onclick="scrollToScene(4)"></div>
+        <div class="nav-dot" onclick="scrollToScene(5)"></div>
+        <div class="nav-dot" onclick="scrollToScene(6)"></div>
+        <div class="nav-dot" onclick="scrollToScene(7)"></div>
+    </div>
+
+    <!-- Scene 1: Intro -->
+    <section class="scene scene-intro" id="scene-0">
+        <h1 class="main-title">PWMOIC</h1>
+        <div class="acronym-row">
+            <div class="acronym-item">
+                <span class="acronym-letter">P</span>
+                <span class="acronym-word">Probability</span>
+            </div>
+            <div class="acronym-item">
+                <span class="acronym-letter">W</span>
+                <span class="acronym-word">Weighted</span>
+            </div>
+            <div class="acronym-item">
+                <span class="acronym-letter">M</span>
+                <span class="acronym-word">Multiple on</span>
+            </div>
+            <div class="acronym-item">
+                <span class="acronym-letter">I</span>
+                <span class="acronym-word">Invested</span>
+            </div>
+            <div class="acronym-item">
+                <span class="acronym-letter">C</span>
+                <span class="acronym-word">Capital</span>
+            </div>
+        </div>
+        <div class="formula-box">
+            <span class="green">PWMOIC</span> = <span class="blue">Σ</span>(<span class="yellow">Probability</span> × <span class="green">MOIC</span>)
+        </div>
+        <p class="tagline">A framework for modeling venture investment returns through probability-weighted outcome analysis</p>
+    </section>
+
+    <!-- Scene 2: Formula -->
+    <section class="scene scene-formula" id="scene-1">
+        <h2 class="section-title">Core Formula</h2>
+        <div class="section-bar"></div>
+        <div class="formula-list">
+            <div class="formula-item">
+                <div class="formula-number" style="background: #F59E0B;">1</div>
+                <div class="formula-content">
+                    <div class="formula-label">Probability</div>
+                    <code class="formula-code" style="color: #F59E0B;">P(i) = Π(transition probabilities)</code>
+                </div>
+            </div>
+            <div class="formula-item">
+                <div class="formula-number" style="background: #3B82F6;">2</div>
+                <div class="formula-content">
+                    <div class="formula-label">Revenue</div>
+                    <code class="formula-code" style="color: #3B82F6;">Revenue(i) = TAM × Market Share(i)</code>
+                </div>
+            </div>
+            <div class="formula-item">
+                <div class="formula-number" style="background: #10B981;">3</div>
+                <div class="formula-content">
+                    <div class="formula-label">Exit Value</div>
+                    <code class="formula-code" style="color: #10B981;">Exit Value(i) = Revenue(i) × Exit Multiple</code>
+                </div>
+            </div>
+            <div class="formula-item">
+                <div class="formula-number" style="background: #EF4444;">4</div>
+                <div class="formula-content">
+                    <div class="formula-label">MOIC</div>
+                    <code class="formula-code" style="color: #EF4444;">MOIC(i) = Exit Value × Ownership / Investment</code>
+                </div>
+            </div>
+            <div class="formula-item">
+                <div class="formula-number" style="background: #8B5CF6;">5</div>
+                <div class="formula-content">
+                    <div class="formula-label">PWMOIC</div>
+                    <code class="formula-code" style="color: #8B5CF6;">PWMOIC(i) = P(i) × MOIC(i)</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 3: Probability Tree -->
+    <section class="scene scene-tree" id="scene-2">
+        <h2 class="section-title">Probability Tree</h2>
+        <div class="section-bar"></div>
+        <div class="tree-container">
+            <div class="tree-stages">
+                <div class="tree-node node-investment">Investment</div>
+                <span class="tree-arrow">→</span>
+                <div class="tree-node node-early">Early Stage</div>
+                <span class="tree-arrow">→</span>
+                <div class="tree-node node-cross">Cross Chasm</div>
+                <span class="tree-arrow">→</span>
+                <div class="tree-node node-mass">Mass Market</div>
+                <span class="tree-arrow">→</span>
+                <div class="tree-node node-position">Position</div>
+            </div>
+            <h3 style="color: #FFB800; font-size: 18px; margin: 20px 0 10px;">6 Terminal Outcomes</h3>
+            <div class="outcomes-grid">
+                <div class="outcome-card outcome-leader">
+                    <div class="outcome-label">Leader</div>
+                    <div class="outcome-desc">Category winner</div>
+                </div>
+                <div class="outcome-card outcome-challenger">
+                    <div class="outcome-label">Challenger</div>
+                    <div class="outcome-desc">#2 or #3 position</div>
+                </div>
+                <div class="outcome-card outcome-follower">
+                    <div class="outcome-label">Follower</div>
+                    <div class="outcome-desc">Viable smaller player</div>
+                </div>
+                <div class="outcome-card outcome-niche">
+                    <div class="outcome-label">Niche Only</div>
+                    <div class="outcome-desc">Limited segment</div>
+                </div>
+                <div class="outcome-card outcome-nocross">
+                    <div class="outcome-label">No Cross</div>
+                    <div class="outcome-desc">Acqui-hire/small exit</div>
+                </div>
+                <div class="outcome-card outcome-failure">
+                    <div class="outcome-label">Failure</div>
+                    <div class="outcome-desc">Complete loss</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 4: Stage Factor -->
+    <section class="scene scene-stage" id="scene-3">
+        <h2 class="section-title">Stage Factor</h2>
+        <div class="section-bar"></div>
+        <div class="stage-cards">
+            <div class="stage-card stage-preseed">
+                <div class="stage-header">
+                    <div class="stage-icon">1</div>
+                    <div class="stage-name">Pre-Seed</div>
+                </div>
+                <div class="stage-value">62.5%</div>
+                <div class="stage-bar"><div class="stage-bar-fill"></div></div>
+                <p class="stage-desc">Highest uncertainty. Evaluations based on ideas, vision, and founder potential.</p>
+            </div>
+            <div class="stage-card stage-seed">
+                <div class="stage-header">
+                    <div class="stage-icon">2</div>
+                    <div class="stage-name">Seed</div>
+                </div>
+                <div class="stage-value">81.25%</div>
+                <div class="stage-bar"><div class="stage-bar-fill"></div></div>
+                <p class="stage-desc">Early traction signals available but limited data. Some PMF validation.</p>
+            </div>
+            <div class="stage-card stage-seriesa">
+                <div class="stage-header">
+                    <div class="stage-icon">3</div>
+                    <div class="stage-name">Series A</div>
+                </div>
+                <div class="stage-value">100%</div>
+                <div class="stage-bar"><div class="stage-bar-fill"></div></div>
+                <p class="stage-desc">Real metrics, customer evidence, and demonstrated execution. Full confidence.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 5: Scorecards -->
+    <section class="scene scene-scorecards" id="scene-4">
+        <h2 class="section-title">Life Stage Assessments</h2>
+        <div class="section-bar"></div>
+        <div class="scorecard-grid">
+            <div class="scorecard">
+                <div class="scorecard-header">
+                    <span class="scorecard-emoji">👤</span>
+                    <div>
+                        <div class="scorecard-title">Founder Scorecard</div>
+                        <div class="scorecard-weight">~45% weight at Early Stage</div>
+                    </div>
+                </div>
+                <p class="scorecard-desc">11 traits across execution and scaling potential. Internal Fire acts as multiplier.</p>
+                <div class="scorecard-traits">
+                    <div class="trait"><div class="trait-dot"></div>Founder Market Fit</div>
+                    <div class="trait"><div class="trait-dot"></div>Learning Velocity</div>
+                    <div class="trait"><div class="trait-dot"></div>Technical Prowess</div>
+                    <div class="trait"><div class="trait-dot"></div>Capital Efficiency</div>
+                    <div class="trait"><div class="trait-dot"></div>Internal Fire 🔥</div>
+                </div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-header">
+                    <span class="scorecard-emoji">🏢</span>
+                    <div>
+                        <div class="scorecard-title">Company Scorecard</div>
+                        <div class="scorecard-weight">Stage-dependent dimensions</div>
+                    </div>
+                </div>
+                <p class="scorecard-desc">Cascade logic: Strong (≥3.5), Adequate (2.5-3.4), Weak (&lt;2.5).</p>
+                <div class="scorecard-traits">
+                    <div class="trait"><div class="trait-dot"></div>PMF & Growth Metrics</div>
+                    <div class="trait"><div class="trait-dot"></div>Unit Economics</div>
+                    <div class="trait"><div class="trait-dot"></div>Product & Technology</div>
+                    <div class="trait"><div class="trait-dot"></div>Market & Competitive</div>
+                </div>
+            </div>
+            <div class="scorecard">
+                <div class="scorecard-header">
+                    <span class="scorecard-emoji">💨</span>
+                    <div>
+                        <div class="scorecard-title">Tailwinds Scorecard</div>
+                        <div class="scorecard-weight">0.8x - 1.5x multiplier</div>
+                    </div>
+                </div>
+                <p class="scorecard-desc">Market factors scalar applied to Early Stage probability.</p>
+                <div class="scorecard-traits">
+                    <div class="trait"><div class="trait-dot"></div>Regulatory (40%)</div>
+                    <div class="trait"><div class="trait-dot"></div>Tech Shift (30%)</div>
+                    <div class="trait"><div class="trait-dot"></div>Secular Trends (20%)</div>
+                    <div class="trait"><div class="trait-dot"></div>Macro Factors (10%)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 6: ARR Adjustment -->
+    <section class="scene scene-arr" id="scene-5">
+        <h2 class="section-title">ARR Progress Adjustment</h2>
+        <div class="section-bar"></div>
+        <div class="arr-container">
+            <div class="arr-steps">
+                <div class="arr-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Stage Completion %</h4>
+                        <div class="step-formula">Current ARR / Target ARR</div>
+                        <div class="step-value">$1M / $4M = 25%</div>
+                    </div>
+                </div>
+                <div class="arr-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Risk Gap</h4>
+                        <div class="step-formula">1 - Baseline Probability</div>
+                        <div class="step-value">1 - 57% = 43%</div>
+                    </div>
+                </div>
+                <div class="arr-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Risk Eliminated</h4>
+                        <div class="step-formula">Completion % × Risk Gap</div>
+                        <div class="step-value">25% × 43% = 10.75%</div>
+                    </div>
+                </div>
+                <div class="arr-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Adjusted Probability</h4>
+                        <div class="step-formula">Baseline + Risk Eliminated</div>
+                        <div class="step-value">57% + 10.75% = 67.75%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="arr-visual">
+                <div class="arr-visual-title">Example Calculation</div>
+                <div class="progress-bar-container">
+                    <div class="progress-label">ARR Progress to Early Stage Target</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>$1M</span>
+                        <span>Target: $4M</span>
+                    </div>
+                </div>
+                <div class="prob-comparison">
+                    <div class="prob-box">
+                        <div class="prob-label">Baseline</div>
+                        <div class="prob-value prob-baseline">57%</div>
+                    </div>
+                    <div class="prob-arrow">→</div>
+                    <div class="prob-box">
+                        <div class="prob-label">Adjusted</div>
+                        <div class="prob-value prob-adjusted">67.75%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 7: Thresholds -->
+    <section class="scene scene-thresholds" id="scene-6">
+        <h2 class="section-title">Investment Thresholds</h2>
+        <div class="section-bar"></div>
+        <div class="threshold-cards">
+            <div class="threshold-card">
+                <div class="threshold-emoji">🐻</div>
+                <div class="threshold-name">Bear Case</div>
+                <div class="threshold-value">3x</div>
+                <p class="threshold-desc">Downside protection. Even if things go wrong, returns meaningful capital.</p>
+            </div>
+            <div class="threshold-card">
+                <div class="threshold-emoji">🎯</div>
+                <div class="threshold-name">US Base</div>
+                <div class="threshold-value">10x</div>
+                <p class="threshold-desc">Strong expected return with potential to return the fund.</p>
+            </div>
+            <div class="threshold-card">
+                <div class="threshold-emoji">🚀</div>
+                <div class="threshold-name">Global/Bull</div>
+                <div class="threshold-value">30x</div>
+                <p class="threshold-desc">At least one scenario should be an expected fund returner.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scene 8: Summary -->
+    <section class="scene scene-summary" id="scene-7">
+        <h2 class="summary-title">PWMOIC</h2>
+        <p class="summary-subtitle">Framework Summary</p>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <span class="summary-card-emoji">🎯</span>
+                    <span class="summary-card-title">Probability-Weighted Returns</span>
+                </div>
+                <p class="summary-card-desc">PWMOIC = Σ(Probability × MOIC)</p>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <span class="summary-card-emoji">🌳</span>
+                    <span class="summary-card-title">Four-Stage Tree</span>
+                </div>
+                <p class="summary-card-desc">Early → Cross → Mass → Position</p>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <span class="summary-card-emoji">📊</span>
+                    <span class="summary-card-title">Three Scorecards</span>
+                </div>
+                <p class="summary-card-desc">Founder + Company + Tailwinds</p>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <span class="summary-card-emoji">📈</span>
+                    <span class="summary-card-title">Progress Adjustments</span>
+                </div>
+                <p class="summary-card-desc">ARR progress reduces risk</p>
+            </div>
+            <div class="summary-card">
+                <div class="summary-card-header">
+                    <span class="summary-card-emoji">💰</span>
+                    <span class="summary-card-title">Investment Thresholds</span>
+                </div>
+                <p class="summary-card-desc">Bear 3x | Base 10x | Bull 30x</p>
+            </div>
+        </div>
+        <div class="final-tagline">
+            <h3>Data-Driven Venture Analysis</h3>
+            <p>Modeling startup success through probability-weighted outcomes</p>
+        </div>
+    </section>
+
+    <script>
+        // Navigation
+        function scrollToScene(index) {
+            document.getElementById(`scene-${index}`).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update active dot on scroll
+        const scenes = document.querySelectorAll('.scene');
+        const dots = document.querySelectorAll('.nav-dot');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(scenes).indexOf(entry.target);
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        scenes.forEach(scene => observer.observe(scene));
+    </script>
+</body>
+</html>
