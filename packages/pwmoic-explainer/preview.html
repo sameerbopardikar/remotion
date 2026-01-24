@@ -1304,7 +1304,14 @@
 
         function showScene(index) {
             scenes.forEach((s, i) => {
-                s.classList.toggle('active', i === index);
+                if (i === index) {
+                    // Force animation restart by removing and re-adding class
+                    s.classList.remove('active');
+                    void s.offsetWidth; // Trigger reflow
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
             });
             dots.forEach((d, i) => {
                 d.classList.toggle('active', i === index);
@@ -1326,7 +1333,7 @@
         }
 
         function resetTimer() {
-            clearInterval(sceneTimer);
+            clearTimeout(sceneTimer);
             clearInterval(countdownTimer);
 
             let remaining = sceneDuration / 1000;
