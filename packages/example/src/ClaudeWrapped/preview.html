@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Wrapped 2024</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #1C1917;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 9/16;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            opacity: 0;
+            animation: fadeScene 21s infinite;
+        }
+        .scene:nth-child(1) { animation-delay: 0s; }
+        .scene:nth-child(2) { animation-delay: 3s; }
+        .scene:nth-child(3) { animation-delay: 6s; }
+        .scene:nth-child(4) { animation-delay: 9s; }
+        .scene:nth-child(5) { animation-delay: 12s; }
+        .scene:nth-child(6) { animation-delay: 15s; }
+        .scene:nth-child(7) { animation-delay: 18s; }
+
+        @keyframes fadeScene {
+            0%, 100% { opacity: 0; transform: scale(0.95); }
+            2% { opacity: 1; transform: scale(1); }
+            12% { opacity: 1; transform: scale(1); }
+            14% { opacity: 0; transform: scale(0.95); }
+        }
+
+        /* Scene 1: Intro */
+        .scene-intro {
+            background: linear-gradient(135deg, #1C1917 0%, #292524 100%);
+        }
+        .scene-intro h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #D97706;
+            text-shadow: 0 0 40px #D97706;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .scene-intro .subtitle {
+            font-size: 1.2rem;
+            color: #FEF3E2;
+            margin-top: 15px;
+        }
+        .scene-intro .year {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #D97706;
+            margin-top: 30px;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #D97706; }
+            to { text-shadow: 0 0 60px #D97706, 0 0 80px #D97706; }
+        }
+
+        /* Scene 2: Conversations */
+        .scene-conversations {
+            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+        }
+        .scene-conversations .label {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+        }
+        .scene-conversations .number {
+            font-size: 5rem;
+            font-weight: bold;
+            color: white;
+            animation: countUp 1s ease-out forwards;
+        }
+        .scene-conversations .description {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 10px;
+            text-align: center;
+        }
+        .scene-conversations .note {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 30px;
+        }
+
+        /* Scene 3: Code */
+        .scene-code {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        .scene-code .number {
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+        }
+        .scene-code .description {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+        }
+        .scene-code .code-block {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #A7F3D0;
+            text-align: left;
+        }
+
+        /* Scene 4: Topics */
+        .scene-topics {
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+        }
+        .scene-topics h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .topic-bar {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .topic-bar .info {
+            display: flex;
+            justify-content: space-between;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .topic-bar .bar-bg {
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .topic-bar .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            animation: fillBar 1s ease-out forwards;
+        }
+        @keyframes fillBar {
+            from { width: 0; }
+        }
+
+        /* Scene 5: Peak Hours */
+        .scene-peak {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+        }
+        .scene-peak h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+        .scene-peak .time {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #FEF08A;
+            margin: 20px 0;
+        }
+        .chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 150px;
+            margin-top: 20px;
+        }
+        .chart-bar {
+            width: 30px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 6px;
+            animation: growBar 0.5s ease-out forwards;
+        }
+        .chart-bar.peak {
+            background: #FEF08A;
+            box-shadow: 0 0 20px rgba(254, 240, 138, 0.6);
+        }
+        @keyframes growBar {
+            from { height: 0; }
+        }
+        .chart-labels {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .chart-labels span { width: 30px; text-align: center; }
+        .scene-peak .note {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 20px;
+        }
+
+        /* Scene 6: Fun Fact */
+        .scene-funfact {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        .scene-funfact .emoji {
+            font-size: 5rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .scene-funfact h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .scene-funfact .number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1C1917;
+            margin-top: 15px;
+        }
+        .scene-funfact .note {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 15px;
+        }
+
+        /* Scene 7: Outro */
+        .scene-outro {
+            background: linear-gradient(135deg, #1C1917 0%, #292524 100%);
+        }
+        .scene-outro h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #D97706;
+            text-shadow: 0 0 30px #D97706;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .scene-outro .subtitle {
+            font-size: 1.2rem;
+            color: #FEF3E2;
+            margin-top: 20px;
+        }
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #D97706;
+        }
+        .stat .label {
+            font-size: 0.8rem;
+            color: #FEF3E2;
+            margin-top: 5px;
+        }
+        .scene-outro .footer {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 40px;
+        }
+
+        /* Progress bar */
+        .progress {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            animation: progress 21s linear infinite;
+        }
+        @keyframes progress {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* Play button overlay */
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .play-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .play-button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #D97706;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 40px rgba(217, 119, 6, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 60px rgba(217, 119, 6, 0.7);
+        }
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 35px solid white;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            margin-left: 8px;
+        }
+        .play-text {
+            color: white;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        /* Sound toggle */
+        .sound-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            transition: background 0.2s;
+        }
+        .sound-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .sound-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Play overlay -->
+        <div class="play-overlay" id="playOverlay">
+            <div class="play-button"></div>
+            <div class="play-text">Tap to play with music</div>
+        </div>
+
+        <!-- Sound toggle -->
+        <button class="sound-toggle" id="soundToggle" title="Toggle sound">
+            <svg id="soundOn" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            <svg id="soundOff" style="display:none" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+        </button>
+
+        <!-- Scene 1: Intro -->
+        <div class="scene scene-intro">
+            <h1>Claude Wrapped</h1>
+            <div class="subtitle">Your Year with AI</div>
+            <div class="year">2024</div>
+        </div>
+
+        <!-- Scene 2: Conversations -->
+        <div class="scene scene-conversations">
+            <div class="label">You had</div>
+            <div class="number">847</div>
+            <div class="description">conversations with Claude</div>
+            <div class="note">That's more than 95% of users!</div>
+        </div>
+
+        <!-- Scene 3: Code -->
+        <div class="scene scene-code">
+            <div class="label" style="color: rgba(255,255,255,0.8); font-size: 1.3rem;">Together we wrote</div>
+            <div class="number">12,847</div>
+            <div class="description">lines of code</div>
+            <div class="code-block">
+                function buildDreams() {<br>
+                &nbsp;&nbsp;const ideas = await claude.think();<br>
+                &nbsp;&nbsp;return ideas.map(realize);<br>
+                }
+            </div>
+        </div>
+
+        <!-- Scene 4: Topics -->
+        <div class="scene scene-topics">
+            <h2>Your Top Topics</h2>
+            <div class="topic-bar">
+                <div class="info"><span>React & TypeScript</span><span>34%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 34%; background: #61DAFB; box-shadow: 0 0 20px #61DAFB;"></div></div>
+            </div>
+            <div class="topic-bar">
+                <div class="info"><span>Python & Data Science</span><span>28%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 28%; background: #3776AB; box-shadow: 0 0 20px #3776AB;"></div></div>
+            </div>
+            <div class="topic-bar">
+                <div class="info"><span>System Design</span><span>22%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 22%; background: #FF6B6B; box-shadow: 0 0 20px #FF6B6B;"></div></div>
+            </div>
+            <div class="topic-bar">
+                <div class="info"><span>Writing & Editing</span><span>16%</span></div>
+                <div class="bar-bg"><div class="bar-fill" style="width: 16%; background: #FFC107; box-shadow: 0 0 20px #FFC107;"></div></div>
+            </div>
+        </div>
+
+        <!-- Scene 5: Peak Hours -->
+        <div class="scene scene-peak">
+            <h2>Your Peak Productivity</h2>
+            <div class="time">3 PM</div>
+            <div class="chart">
+                <div class="chart-bar" style="height: 40%;"></div>
+                <div class="chart-bar" style="height: 65%;"></div>
+                <div class="chart-bar" style="height: 85%;"></div>
+                <div class="chart-bar" style="height: 50%;"></div>
+                <div class="chart-bar" style="height: 35%;"></div>
+                <div class="chart-bar" style="height: 70%;"></div>
+                <div class="chart-bar peak" style="height: 100%;"></div>
+                <div class="chart-bar" style="height: 80%;"></div>
+                <div class="chart-bar" style="height: 45%;"></div>
+            </div>
+            <div class="chart-labels">
+                <span>9AM</span><span>10</span><span>11</span><span>12</span><span>1PM</span><span>2</span><span>3</span><span>4</span><span>5</span>
+            </div>
+            <div class="note">Afternoon coder detected!</div>
+        </div>
+
+        <!-- Scene 6: Fun Fact -->
+        <div class="scene scene-funfact">
+            <div class="emoji">🚀</div>
+            <h2>Your longest conversation</h2>
+            <div class="number">127 messages</div>
+            <div class="note">That's a true collaboration marathon!</div>
+        </div>
+
+        <!-- Scene 7: Outro -->
+        <div class="scene scene-outro">
+            <h1>Thanks for an amazing year!</h1>
+            <div class="subtitle">Here's to even more in 2025</div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="value">847</div>
+                    <div class="label">Conversations</div>
+                </div>
+                <div class="stat">
+                    <div class="value">12,847</div>
+                    <div class="label">Lines of Code</div>
+                </div>
+                <div class="stat">
+                    <div class="value">42</div>
+                    <div class="label">Topics</div>
+                </div>
+            </div>
+            <div class="footer">Made with Remotion + Claude</div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+    <script>
+        // Web Audio API Music Generator
+        class MusicPlayer {
+            constructor() {
+                this.audioCtx = null;
+                this.isPlaying = false;
+                this.isMuted = false;
+                this.masterGain = null;
+                this.nodes = [];
+            }
+
+            init() {
+                this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                this.masterGain = this.audioCtx.createGain();
+                this.masterGain.gain.value = 0.3;
+                this.masterGain.connect(this.audioCtx.destination);
+            }
+
+            // Create a synth pad sound
+            createPad(freq, duration, startTime) {
+                const osc1 = this.audioCtx.createOscillator();
+                const osc2 = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
+                const filter = this.audioCtx.createBiquadFilter();
+
+                osc1.type = 'sine';
+                osc2.type = 'triangle';
+                osc1.frequency.value = freq;
+                osc2.frequency.value = freq * 1.005; // Slight detune for richness
+
+                filter.type = 'lowpass';
+                filter.frequency.value = 800;
+
+                osc1.connect(filter);
+                osc2.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.masterGain);
+
+                // Envelope
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.15, startTime + 0.3);
+                gain.gain.linearRampToValueAtTime(0.1, startTime + duration - 0.5);
+                gain.gain.linearRampToValueAtTime(0, startTime + duration);
+
+                osc1.start(startTime);
+                osc2.start(startTime);
+                osc1.stop(startTime + duration);
+                osc2.stop(startTime + duration);
+
+                this.nodes.push(osc1, osc2, gain, filter);
+            }
+
+            // Create a plucky melody note
+            createMelody(freq, duration, startTime) {
+                const osc = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.value = freq;
+
+                osc.connect(gain);
+                gain.connect(this.masterGain);
+
+                // Plucky envelope
+                gain.gain.setValueAtTime(0.2, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+                osc.start(startTime);
+                osc.stop(startTime + duration + 0.1);
+
+                this.nodes.push(osc, gain);
+            }
+
+            // Create bass note
+            createBass(freq, duration, startTime) {
+                const osc = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
+                const filter = this.audioCtx.createBiquadFilter();
+
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+
+                filter.type = 'lowpass';
+                filter.frequency.value = 200;
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.masterGain);
+
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(0.25, startTime + 0.05);
+                gain.gain.linearRampToValueAtTime(0.2, startTime + duration - 0.1);
+                gain.gain.linearRampToValueAtTime(0, startTime + duration);
+
+                osc.start(startTime);
+                osc.stop(startTime + duration);
+
+                this.nodes.push(osc, gain, filter);
+            }
+
+            // Create hi-hat sound
+            createHiHat(startTime) {
+                const bufferSize = this.audioCtx.sampleRate * 0.05;
+                const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+
+                const noise = this.audioCtx.createBufferSource();
+                const gain = this.audioCtx.createGain();
+                const filter = this.audioCtx.createBiquadFilter();
+
+                noise.buffer = buffer;
+                filter.type = 'highpass';
+                filter.frequency.value = 8000;
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.masterGain);
+
+                gain.gain.setValueAtTime(0.08, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.05);
+
+                noise.start(startTime);
+
+                this.nodes.push(noise, gain, filter);
+            }
+
+            play() {
+                if (this.isPlaying) return;
+
+                this.init();
+                this.isPlaying = true;
+
+                const now = this.audioCtx.currentTime;
+                const bpm = 110;
+                const beatDuration = 60 / bpm;
+                const barDuration = beatDuration * 4;
+
+                // Chord progressions (uplifting and celebratory)
+                const chords = [
+                    [261.63, 329.63, 392.00], // C major
+                    [293.66, 369.99, 440.00], // D major
+                    [220.00, 277.18, 329.63], // A minor
+                    [246.94, 311.13, 392.00], // G major
+                ];
+
+                // Play 6 bars (covers ~21 seconds at 110 BPM)
+                for (let bar = 0; bar < 6; bar++) {
+                    const barStart = now + bar * barDuration;
+                    const chord = chords[bar % chords.length];
+
+                    // Pad chords
+                    chord.forEach(freq => {
+                        this.createPad(freq, barDuration, barStart);
+                    });
+
+                    // Bass
+                    this.createBass(chord[0] / 2, barDuration / 2, barStart);
+                    this.createBass(chord[0] / 2, barDuration / 2, barStart + barDuration / 2);
+
+                    // Melody (arpeggiated)
+                    const melodyNotes = [chord[0] * 2, chord[1] * 2, chord[2] * 2, chord[1] * 2];
+                    melodyNotes.forEach((freq, i) => {
+                        this.createMelody(freq, beatDuration * 0.8, barStart + i * beatDuration);
+                    });
+
+                    // Hi-hats
+                    for (let beat = 0; beat < 8; beat++) {
+                        this.createHiHat(barStart + beat * (beatDuration / 2));
+                    }
+                }
+
+                // Loop after 21 seconds
+                setTimeout(() => {
+                    if (this.isPlaying && !this.isMuted) {
+                        this.stop();
+                        this.play();
+                    }
+                }, 21000);
+            }
+
+            stop() {
+                this.isPlaying = false;
+                if (this.audioCtx) {
+                    this.audioCtx.close();
+                    this.audioCtx = null;
+                }
+                this.nodes = [];
+            }
+
+            toggleMute() {
+                this.isMuted = !this.isMuted;
+                if (this.masterGain) {
+                    this.masterGain.gain.value = this.isMuted ? 0 : 0.3;
+                }
+                return this.isMuted;
+            }
+        }
+
+        // Initialize
+        const player = new MusicPlayer();
+        const playOverlay = document.getElementById('playOverlay');
+        const soundToggle = document.getElementById('soundToggle');
+        const soundOn = document.getElementById('soundOn');
+        const soundOff = document.getElementById('soundOff');
+
+        // Start on click
+        playOverlay.addEventListener('click', () => {
+            playOverlay.classList.add('hidden');
+            player.play();
+        });
+
+        // Toggle sound
+        soundToggle.addEventListener('click', () => {
+            const muted = player.toggleMute();
+            soundOn.style.display = muted ? 'none' : 'block';
+            soundOff.style.display = muted ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>

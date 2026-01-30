@@ -155,6 +155,7 @@ import {RemotionMediaVideoTexture} from './VideoTexture';
 import {VisualControls} from './VisualControls';
 import {VoiceVisualization} from './voice-visualization';
 import {WhisperWeb} from './WhisperWeb';
+import {ClaudeWrapped} from './ClaudeWrapped';
 
 class Vector2 {
 	readonly x: number;
@@ -1812,6 +1813,16 @@ export const Index: React.FC = () => {
 				durationInFrames={600}
 			/>
 			<ChangingTrimBeforeValue />
+			<Folder name="ClaudeWrapped">
+				<Composition
+					id="claude-wrapped"
+					component={ClaudeWrapped}
+					width={1080}
+					height={1920}
+					fps={30}
+					durationInFrames={630}
+				/>
+			</Folder>
 		</>
 	);
 };
