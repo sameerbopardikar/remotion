@@ -1102,6 +1102,26 @@
         "tailwindcss": "4.1.1",
       },
     },
+    "packages/pwmoic-explainer": {
+      "name": "pwmoic-explainer",
+      "version": "1.0.0",
+      "dependencies": {
+        "@remotion/cli": "workspace:*",
+        "@remotion/zod-types": "workspace:*",
+        "react": "19.2.3",
+        "react-dom": "19.2.3",
+        "remotion": "workspace:*",
+        "zod": "3.22.3",
+      },
+      "devDependencies": {
+        "@remotion/eslint-config-flat": "workspace:*",
+        "@types/react": "19.2.7",
+        "@types/web": "0.0.166",
+        "eslint": "9.19.0",
+        "prettier": "3.6.0",
+        "typescript": "5.9.3",
+      },
+    },
     "packages/react18-tests": {
       "name": "@remotion/react18-tests",
       "version": "4.0.409",
@@ -6350,6 +6370,8 @@
     "pupa": ["pupa@3.1.0", "", { "dependencies": { "escape-goat": "4.0.0" } }, "sha512-FLpr4flz5xZTSJxSeaheeMKN/EDzMdK7b8PTOC6a5PYFKTucWbdqjgqaEyH0shFiSJrVB1+Qqi4Tk19ccU6Aug=="],
 
     "pureimage": ["pureimage@0.4.13", "", { "dependencies": { "jpeg-js": "0.4.4", "opentype.js": "0.4.11", "pngjs": "7.0.0" } }, "sha512-P8aonTNAnXWJn2pBIqyeWw0I/D4YDOfEavCVvbDG+wx3dCujQX0ENZiW5OcHfbd8HKLfVhCf4F/3Xivf1yWDiA=="],
+
+    "pwmoic-explainer": ["pwmoic-explainer@workspace:packages/pwmoic-explainer"],
 
     "qs": ["qs@6.13.0", "", { "dependencies": { "side-channel": "1.1.0" } }, "sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg=="],
 
